@@ -7,7 +7,6 @@
 * [Nomor 3](#nomor-3)
 * [Nomor 4](#nomor-4)
 * [Nomor 5](#nomor-5)
-* [Nomor 6](#nomor-6)
 
 ## Nomor 1
 Seorang peneliti melakukan penelitian mengenai pengaruh aktivitas 𝐴 terhadap
@@ -72,126 +71,45 @@ mencatat jarak yang mereka tempuh. Jika sampel acak menunjukkan rata-rata
 Apakah Anda setuju dengan klaim tersebut?
 
 #### Penyelesaian
-Dalam implementasi bahasa R, dapat digunakan fungsi `dbinom(x, size, prob)` untuk menghitung peluang dalam distribusi binomial. Pada soal diketahui bahwa terdapat 20 pasien menderita Covid19 yang digunakan sebagai parameter size, peluang sembuh 0.2 sebagai parameter probs, dan 4 pasien yang sembuh (sukses) sebagai parameter x.
+Diketahui:
+
+H0: μ ≥ 20.000
+
+H1: μ < 20.000
+
+Dimana  μ adalah rata-rata jarak tempuh mobil per tahun.
+
+Karena pada soal tidak ditentukan nilai dari level signifikan (α) -nya, maka saya mengasumsikan menggunakan nilai α default pada aplikasi R Studio yaitu α = 0.05
+
+Dalam persoalan ini bisa menggunakan rumus manual yaitu:
+<img width="250" alt="image" src="https://user-images.githubusercontent.com/99629909/170826430-bdee13e0-0a02-49f4-9f41-7acf32c97701.png">
+
+Namun pada persoalan ini saya menggunakan library dari RStudio sesuai dengan perintah soal. Kodenya adalah sebagai berikut:
 
 ```R
-dbinom(x=4, size=20, prob=.2)
+zsum.test(mean.x=23500, sigma.x = 3900, n.x = 100,  
+          alternative = "less", mu = 20000)
 ```
-Dari kode di atas didapatkan hasil perhitungan peluang terdapat 4 pasien yang sembuh dari 20 pasien dengan peluang sembuh sebesar 0.2 adalah 0.2181994
 
-<img width="256" alt="image" src="https://user-images.githubusercontent.com/99629909/162554237-e47fe2c4-7f96-4f7c-b527-6d8acc028abd.png">
+Pada kode di atas conf.level tidak ditulis, karena hanya langsung mengikuti default pada RStudio. 
 
+Dari kode di atas didapatkan output sebagai berikut:
+
+<img width="438" alt="image" src="https://user-images.githubusercontent.com/99629909/170826608-8984b7b4-beea-45ed-84f7-298d92515f2e.png">
+
+>**Sehingga saya tidak setuju dengan klaim tersebut.**
 
 ### **Soal 2b**
 Jelaskan maksud dari output yang dihasilkan!
 
 #### Penyelesaian
-Langkah-langkah untuk membuat grafik dalam distribusi binomial adalah:
-0. digunakan bantuan `library(dplyr)` dan `library(ggplot2)` untuk menampilkan grafik
-1. melakukan permisalan atau menentukan range data randomnya. Pada kasus ini saya misalkan rangenya adalah antara 0 sampai 10
-2. kemudian gunakan command `data.frame`. Pada command ini dibutuhkan parameter prob yang dapat dicari dengan menggunakan command `dbinom` dengan parameter sesuai ketentuan soal
-3. digunakan command `mutate` yang mengambil parameter dari banyak kesuksesan untuk dihighlight. Pada kasus ini adalah 4
-4. kemudian tetapkan sumbu x sebagai keberhasilan (x) dan sumbu y sebagai prob/peluang distribusi binomial
-5. atur posisi penempatan angka dan kata pada grafik, sehingga dapat terbaca dengan nyaman
-6. digunakan command `labs` untuk memberikan nama pada grafik
-
-Berikut ini merupakan kode untuk membuat grafik banyak kondisi sukses terhadap peluang distribusi binomial:
-```R
-library(dplyr)
-library(ggplot2)
-#library(scales)
-
-data.frame(heads = 0:10, prob = dbinom(x = 0:10, size = 20, prob = .2)) %>%
-  mutate(Heads = ifelse(heads == 4, "4", "other")) %>%
-  ggplot(aes(x = factor(heads), y = prob, fill = Heads)) +
-  geom_col() +
-  geom_text(
-    aes(label = round(prob,4), y = prob + 0.01),
-    position = position_dodge(0.9),
-    size = 2,
-    vjust = 0
-  ) +
-  labs(title = "Probability of X = 4 successes.",
-       subtitle = "b(20, .2)",
-       x = "Successes (x)",
-       y = "probability") 
-```
-Berikut ini merupakan tampilan grafiknya:
-
-<img width="391" alt="image" src="https://user-images.githubusercontent.com/99629909/162554964-ce76e49a-7228-4b5c-b1ef-31a51d9af380.png">
-
-Sedangkan untuk menampilkan grafik histogram x (banyak kondisi sukses) terhadap frekuensi, dapat ditampilkan dengan langkah berikut ini:
-1. generate data random menggunakan command `rbinom`. Disini saya mencontohkan dengan hanya mengambil 10 data random
-2. kemudian digunakan package library(tidyverse) untuk membantu dalam pembuatan grafik
-3. digunakan command `qplot` dengan parameter geom adalah histogram dan set warna border sesuai yang kita inginkan
-
-```R
-x <- rbinom(10, 20, .2) 
-library(tidyverse)
-qplot(x, geom = "histogram", col = I("white"))
-```
-Berikut merupakan tampilan grafik histogram x (banyak kondisi sukses) terhadap frekuensi:
-
-<img width="387" alt="image" src="https://user-images.githubusercontent.com/99629909/162555107-4271e787-84ff-4ae4-8c66-93f44ead89de.png">
+Berdasarkan output yang dihasilkan, diperoleh nilai Zhitung = 8.9744 dan p-value = 1. Dari hasil tersebut saya dapat menolak hipotesis awal dan disumpulkan bahwa terdapat cukup bukti di mana rata-rata dari jarak tempuh mobil per tahun secara signifikan tidak lebih besar dari 20.000 kilometer. Selain itu, dari output, kita juga dapatkan selang kepercayaan rata-rata dari sampel yang berkisar kurang dari 24141.49 atau dapat dinyatakan bahwa dengan selang kepercayaan 95% kita yakin rata-rata jarak tempuh mobil per tahun akan berkisar antara 24141.49. Rata-rata jarak tempuh mobil per tahun dari data sampel yang dihitung adalah 23500.
 
 ### **Soal 2c**
 Buatlah kesimpulan berdasarkan P-Value yang dihasilkan!
 
 #### Penyelesaian
-Rataan untuk kondisi eksak dapat dihitung dengan rumus
-> mean(x) = size * p
-
-Sehingga pengimplementasiannya dalam bahasa R adalah:
-```R
-n=20
-p=0.2
-mean = n * p
-mean
-```
-Dari kode di atas didapatkan hasil rataan exact adalah 4
-
-<img width="122" alt="image" src="https://user-images.githubusercontent.com/99629909/162555398-9a9dfdab-bd82-4515-b9a9-2f3af33d4146.png">
-
-Rataan untuk kondisi simulasi (n data random) dapat dihitung dengan command `mean` dengan parameter `rbinom`. Misalkan n = 10, maka dapat dituliskan kode: 
-```R
-x <- rbinom(10, 20, .2) 
-mean(x)
-```
-atau bisa juga dituliskan dengan format langsung sebagai berikut:
-```R
-mean(rbinom(n = 10, size = 20, prob = .2))
-```
-Dari kode di atas didapatkan hasil rataan simulasi adalah kurang lebih bernilai 4
-
-<img width="361" alt="image" src="https://user-images.githubusercontent.com/99629909/162555554-55c7a3b2-f4fd-405b-ac08-b781944d546e.png">
-
-
-Varian untuk kondisi eksak dapat dihitung dengan rumus
-> var(x) = size * p * (1-p)
-
-Sehingga pengimplementasiannya dalam bahasa R adalah:
-```R
-n=20
-p=0.2
-var = n * p * (1-p)
-var
-```
-Dari kode di atas didapatkan hasil rataan exact adalah 3.2
-
-<img width="178" alt="image" src="https://user-images.githubusercontent.com/99629909/162555687-0b6a6e93-f5a6-4536-a853-3b2bb220960e.png">
-
-Varian untuk kondisi simulasi (n data random) dapat dihitung dengan command `var` dengan parameter `rbinom`. Misalkan n = 10, maka dapat dituliskan kode: 
-```R
-x <- rbinom(10, 20, .2) 
-var(x)
-```
-atau bisa juga dituliskan dengan format langsung sebagai berikut:
-```R
-var(rbinom(n = 10, size = 20, prob = .2))
-```
-Dari kode di atas didapatkan hasil rataan simulasi adalah kurang lebih bernilai 3.2
-
-<img width="355" alt="image" src="https://user-images.githubusercontent.com/99629909/162555760-939e0dca-5bf3-431e-89ed-f2cf9b31c251.png">
+Karena P-Value hitungan lebih kecil dari taraf keberartian α yang ditentukan, maka tolak H0 dengan P < 0,0001. Kesimpulan : Rata-rata sebuah mobil dikendarai sejauh <20.000 km setahun.
 
 
 
