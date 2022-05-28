@@ -97,20 +97,19 @@ Dari kode di atas didapatkan output sebagai berikut:
 
 <img width="438" alt="image" src="https://user-images.githubusercontent.com/99629909/170826608-8984b7b4-beea-45ed-84f7-298d92515f2e.png">
 
->**Sehingga saya tidak setuju dengan klaim tersebut.**
+>**Sehingga saya setuju dengan klaim tersebut.**
 
 ### **Soal 2b**
 Jelaskan maksud dari output yang dihasilkan!
 
 #### Penyelesaian
-Berdasarkan output yang dihasilkan, diperoleh nilai Zhitung = 8.9744 dan p-value = 1. Dari hasil tersebut saya dapat menolak hipotesis awal dan disumpulkan bahwa terdapat cukup bukti di mana rata-rata dari jarak tempuh mobil per tahun secara signifikan tidak lebih besar dari 20.000 kilometer. Selain itu, dari output, kita juga dapatkan selang kepercayaan rata-rata dari sampel yang berkisar kurang dari 24141.49 atau dapat dinyatakan bahwa dengan selang kepercayaan 95% kita yakin rata-rata jarak tempuh mobil per tahun akan berkisar antara 24141.49. Rata-rata jarak tempuh mobil per tahun dari data sampel yang dihitung adalah 23500.
+Berdasarkan output yang dihasilkan, diperoleh nilai Zhitung = 8.9744 dan p-value = 1. Dari hasil tersebut saya dapat menerima hipotesis awal dan disumpulkan bahwa tidak terdapat cukup bukti di mana rata-rata dari jarak tempuh mobil per tahun secara signifikan tidak lebih besar dari 20.000 kilometer. Selain itu, dari output, kita juga dapatkan selang kepercayaan rata-rata dari sampel yang berkisar kurang dari 24141.49 atau dapat dinyatakan bahwa dengan selang kepercayaan 95% kita yakin rata-rata jarak tempuh mobil per tahun akan berkisar antara 24141.49. Rata-rata jarak tempuh mobil per tahun dari data sampel yang dihitung adalah 23500.
 
 ### **Soal 2c**
 Buatlah kesimpulan berdasarkan P-Value yang dihasilkan!
 
 #### Penyelesaian
-Karena P-Value hitungan lebih kecil dari taraf keberartian α yang ditentukan, maka tolak H0 dengan P < 0,0001. Kesimpulan : Rata-rata sebuah mobil dikendarai sejauh <20.000 km setahun.
-
+Karena P-Value hitungan (P-Value = 1) lebih besar dari taraf keberartian α yang ditentukan (α = 0.05), maka H0 atau hipotesis awal dapat diterima. Sehingga dapat disimpulkan bahwa rata-rata jarak tempuh sebuah mobil adalah lebih dari 20.000 kilometer per tahun atau dengan kalimat lain, mobil dikemudikan rata-rata lebih dari 20.000 kilometer per tahun.
 
 
 ## Nomor 3
