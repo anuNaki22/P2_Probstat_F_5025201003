@@ -82,9 +82,17 @@ Dimana  μ adalah rata-rata jarak tempuh mobil per tahun.
 Karena pada soal tidak ditentukan nilai dari level signifikan (α) -nya, maka saya mengasumsikan menggunakan nilai α default pada aplikasi R Studio yaitu α = 0.05
 
 Dalam persoalan ini bisa menggunakan rumus manual yaitu:
+
 <img width="250" alt="image" src="https://user-images.githubusercontent.com/99629909/170826430-bdee13e0-0a02-49f4-9f41-7acf32c97701.png">
 
-Namun pada persoalan ini saya menggunakan library dari RStudio sesuai dengan perintah soal. Kodenya adalah sebagai berikut:
+Namun pada persoalan ini saya menggunakan library dari RStudio sesuai dengan perintah soal. Sehingga diperlukan install package terlebih dahulu dengan kode sebagai berikut:
+
+```R
+install.packages("BSDA")
+library(BSDA)
+```
+
+Lalu untuk kode perhitungannya adalah sebagai berikut:
 
 ```R
 zsum.test(mean.x=23500, sigma.x = 3900, n.x = 100,  
