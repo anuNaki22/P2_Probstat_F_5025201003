@@ -362,7 +362,7 @@ Dari Hasil Poin C, Berapakah nilai-p ? , Apa yang dapat Anda simpulkan
 dari H0?
 
 #### Penyelesaian
-Dari hasil di atas dapat dilihat bahwa p-valuenya adalah 0.0013. Karena p-valuenya 0.0013 yang mana lebih kecil dari 0.05, maka Ho ditolak.
+Dari hasil di atas dapat dilihat bahwa p-valuenya adalah 0.0013. Karena p-valuenya 0.0013 yang mana lebih kecil dari 0.05, maka H0 ditolak.
 
 ### **Soal 4e**
 Verifikasilah jawaban model 1 dengan Post-hoc test Tukey HSD, dari nilai p
