@@ -28,27 +28,42 @@ Carilah Standar Deviasi dari data selisih pasangan pengamatan tabel
 diatas
 
 #### Penyelesaian
-Pada soal, diketahui bahwa p = 0.20 dan x = 3. Diketahui juga bahwa soal ini meruapakan permasalahan distribusi geometrik. Sehingga pengimplementasian pada bahasa R bisa menggunakan command `dgeom` pada kondisi eksak.
-```R
-dgeom(x = 3, prob = .2)
-```
-Dari kode di atas, didapatkan hasil perhitungan 0.1024
+Untuk menghitung standar deviasi bisa dilakukan melalui cara manual dan menggunakan library RStudio. Untuk cara perhitungan manualnya adalah sebagai berikut:
 
-<img width="99" alt="image" src="https://user-images.githubusercontent.com/99629909/162525950-8d90025d-66aa-4344-b6e9-3dc40d69c139.png">
+<img width="401" alt="image" src="https://user-images.githubusercontent.com/99629909/170859531-ab549f9f-c4df-4cab-b4d4-4ee8d27f23e4.png">
+
+Sedangkan untuk implementasinya ke bahasa R adalah sebagai berikut:
+
+```R
+x <- c(78, 75, 67, 77, 70, 72, 78, 74, 77)
+y <- c(100, 95, 70, 90, 90, 90, 89, 90, 100)
+
+dataku = data.frame(x,y)
+
+stdev = sd(dataku$y - dataku$x)
+stdev
+```
+
+Pada kode di atas, langkah pertamanya adalah dengan memasukkan semua data yang ada, yaitu data saturasi oksigen sebelum beraktivitas (x) dan data saturassi oksigen sesudah beraktivitas (y). Kemudian digabung menjadi satu tabel dengan menggunakan `data.frame`. Terakhir, dilakukan perhitungan standar deviasi dengan menggunakan `sd`.
+
+<img width="377" alt="image" src="https://user-images.githubusercontent.com/99629909/170859830-5b3f0dce-d97e-439b-905f-db2a713abdbb.png">
+
+**Sehingga didapatkan nilai standar deviasi yang sama dengan cara manual yaitu 6.359595**
 
 
 ### **Soal 1b**
 carilah nilai t (p-value)
 
 #### Penyelesaian
-Pada soal, diketahui bahwa digunakan 10000 data random dengan probabilitas keberhasilan dan X yang sama seperti soal sebelumnya. Untuk melakukan generate 10000 data random, digunakan command `rgeom` dengan parameter n = 10000 dan prob = 0.2. Karena pada soal ini digunakan banyak data, maka kita dapat menggunakan fungsi `mean` dengan kondisi X = 3.
+Untuk mencari nilai t dan p-value bisa langsung menggunakan fungsi `t.test`. Implementasinya adalah sebagai berikut:
+
 ```R
-mean(rgeom(n=10000, prob=.2)==3)
+t.test(dataku$y,dataku$x,paired = TRUE)
 ```
-Dari kode di atas, didapatkan hasil perhitungan kurang lebih 0.1024
 
-<img width="288" alt="image" src="https://user-images.githubusercontent.com/99629909/162526548-e35f8d1e-b478-4916-b175-668503e4d33c.png">
+<img width="544" alt="image" src="https://user-images.githubusercontent.com/99629909/170860566-842f7f9e-cf58-4c21-9dc5-0df69575de93.png">
 
+Dari kode di atas, diketahui nilai statistik dari uji 𝑡 (𝑡) adalah 7.6525, sementara nilai probabilitas (p-value) adalah 0.00006003 (atau 6.003e-05). Diketahui juga nilai derajat bebas (df) adalah 8. 
 
 ### **Soal 1c**
 tentukanlah apakah terdapat pengaruh yang signifikan secara statistika
@@ -58,8 +73,10 @@ pengaruh yang signifikan secara statistika dalam hal kadar saturasi
 oksigen , sebelum dan sesudah melakukan aktivitas 𝐴”
 
 #### Penyelesaian
-Dari perbandingan hasil poin a dan b dapat dilihat bahwa nilainya hampir sama antara keduanya. Sehingga dapat disimpulkan pada metode perhitungan eksak maupun simulasi (data random dengan `mean`) dapat diterapkan dalam menghitung persoalan peluang pada distribusi geometrik.
+Nilai dari 𝑡𝑘𝑟𝑖𝑡𝑖𝑠 dengan derajat bebas 8 dan tingkat signifikansi 5% adalah ±2,306. Perhatikan bahwa karena |𝑡ℎ𝑖𝑡𝑢𝑛𝑔| > |𝑡𝑘𝑟𝑖𝑡𝑖𝑠|, yakni 7.652 > 2.306, maka disimpulkan bahwa hipotesis nol ditolak dan hipotesis alternatif diterima. Hal ini berarti terdapat pengaruh yang signifikan secara statistika dalam hal kadar saturasi oksigen, sebelum dan sesudah melakukan aktivitas 𝐴 pada tingkat signifikansi 5%.
 
+Berdasarkan perhitungan pada penyelesaian soal 1b, diketahui nilai probabilitas dari uji 𝑡 (p-value) adalah 0.00006003. Karena nilai probabilitas tersebut lebih kecil dibandingkan tingkat signifikansi 𝛼 = 0.05,
+maka hipotesis nol ditolak dan hipotesis alternatif diterima. Hal ini berarti terdapat pengaruh yang signifikan secara statistika dalam hal kadar saturasi oksigen, sebelum dan sesudah melakukan aktivitas 𝐴 pada tingkat signifikansi 5%.
 
 ## Nomor 2
 Diketahui bahwa mobil dikemudikan rata-rata lebih dari 20.000 kilometer per tahun.
