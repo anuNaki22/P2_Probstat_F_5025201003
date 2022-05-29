@@ -412,133 +412,114 @@ Eksperimen. Dengan data tersebut:
 Buatlah plot sederhana untuk visualisasi data
 
 #### Penyelesaian
-Fungsi Probabilitas (densitas) dari Distribusi Exponensial adalah sebagai berikut:
-> f(x; λ) = λe^(-λx)
+Pada penyelesaian soal nomor 5 ini saya menggunakan referensi kode dari internet dengan link sebagai berikut: https://statdoe.com/two-way-anova-in-r/
 
-Langkah-langkah untuk menghitung fungsi probabilitas dari distribusi exponensial dalam bahasa R adalaah:
-1. digunakan fungsi `set.seed(1)` supaya pada saat pemanggilan random data, nilainya tetap/konsisten
-2. digunakan fungsi `rexp(1)` untuk generate 1 data random
-3. digunakan fungsi `dexp()` dengan parameter data dari `rexp(1)` dan lambda 3 
+Langkah pertama adalah menginstall packages yang dibutuhkan yaitu `multcompView` dan melakukan run terhadap semua library yang dibutuhkan dalam penyelesaian soal ini.
 
 ```R
-set.seed(1)
-dexp(rexp(1), 3)
+install.packages("multcompView")
+library(multcompView)
+library(readr)
+library(dplyr)
+library(ggplot2)
 ```
-Hasil dari Fungsi Probabilitas Distribusi Exponensial di atas adalah 0.31
 
-<img width="150" alt="image" src="https://user-images.githubusercontent.com/99629909/162599060-482cd98c-b121-4039-82fc-2a1d01f93ae7.png">
+Kemudian kita read dan assign file GTL.csv dari link pada soal menggunakan kode berikut:
+
+```R
+GTL <- read_csv("GTL.csv")
+head(GTL)
+```
+
+>>SS
+
+Dan terakhir kita akan membuat visualisasi data menggunakan simple plot dengan kode sebagai berikut:
+
+```R
+str(GTL)
+```
+Untuk mengecek apakah data kita sudah masuk ke `GTL` atau belum sekaligus melakuakn observasi terhadp data, kita bisa menggunakan kode berikut:
+
+```R
+qplot(x = Temp, y = Light, geom = "point", data = GTL) +
+  facet_grid(.~Glass, labeller = label_both)
+```
+
+Tampilan dari hasil run kode di atas adalah sebagai berikut:
+
+>>SS
 
 ### **Soal 5b**
 Lakukan uji ANOVA dua arah
 
 #### Penyelesaian
-Dalam pembuatan histogram dari distribusi exponential, digunakan fungsi `hist()` yang di dalamnya telah digenerate data random menggunakan fungsi `rexp` dengan banyak data sesuai yang diinginkan dan dengan nilai lambda sebesar 3.
+Pertama-tama kita harus membuat variabel as factor sebagai ANOVA
 ```R
-# random data = 10
-hist(rexp(10, 3)
-     ,main = "Distribution Exponential of 10 random data"
-     ,xlab = "variables"
-     ,breaks = 15
-     ,density = 15)
+GTL$Glass <- as.factor(GTL$Glass)
+GTL$Temp_Factor <- as.factor(GTL$Temp)
+str(GTL)
 ```
-<img width="468" alt="image" src="https://user-images.githubusercontent.com/99629909/162599626-bdad3349-01d8-45ed-9890-26ac13950295.png">
+
+>>SS
+
+Kemudian untuk melakukan analisis of variance, kita bisa menggunakan kode sebagai berikut:
 
 ```R
-# random data = 100
-hist(rexp(100, 3)
-     ,main = "Distribution Exponential of 100 random data"
-     ,xlab = "variables"
-     ,breaks = 15
-     ,density = 15)
+anova <- aov(Light ~ Glass*Temp_Factor, data = GTL)
+summary(anova)
 ```
-<img width="469" alt="image" src="https://user-images.githubusercontent.com/99629909/162599655-9caa5780-2f42-42dc-9e09-ead57baca882.png">
 
-```R
-# random data = 1000
-hist(rexp(1000, 3)
-     ,main = "Distribution Exponential of 1000 random data"
-     ,xlab = "variables"
-     ,breaks = 15
-     ,density = 15)
-```
-<img width="478" alt="image" src="https://user-images.githubusercontent.com/99629909/162599666-4965d683-09d4-4237-a444-b8d36fdb0514.png">
-
-```R
-# random data = 10000
-hist(rexp(10000, 3)
-     ,main = "Distribution Exponential of 10000 random data"
-     ,xlab = "variables"
-     ,breaks = 15
-     ,density = 15)
-```
-<img width="475" alt="image" src="https://user-images.githubusercontent.com/99629909/162599679-24beb83d-eb49-425e-85e2-8837e01a723e.png">
+>>SS
 
 ### **Soal 5c**
 Tampilkan tabel dengan mean dan standar deviasi keluaran cahaya untuk
 setiap perlakuan (kombinasi kaca pelat muka dan suhu operasi)
 
 #### Penyelesaian
-Rataan untuk kondisi eksak dapat dihitung dengan rumus
-> mean(x) = 1/lambda
+Pertama-tama data akan dikelompokkan dengan fungsi `group_by`, kemudian dilakukan `summarise` sesuai dengan mean dan standar deviasi yang berlaku. Implementasi ke dalam kodenya adalah sebagai berikut:
 
-Sehingga pengimplementasiannya dalam bahasa R adalah:
 ```R
-lambda = 3
-mean = 1/lambda
-mean
+data_summary <- group_by(GTL, Glass, Temp) %>%
+  summarise(mean=mean(Light), sd=sd(Light)) %>%
+  arrange(desc(mean))
+print(data_summary)
 ```
-Dari kode di atas didapatkan hasil rataan exact adalah 0.33
 
-<img width="150" alt="image" src="https://user-images.githubusercontent.com/99629909/162558625-7fd8d526-c652-415b-9d33-cb138bc4d682.png">
-
-Rataan untuk kondisi simulasi (n data random) dapat dihitung dengan command `mean` dengan parameter `rexp`. Misalkan n = 100, maka dapat dituliskan kode: 
-```R
-x <- rexp(100, 3) 
-mean(x)
-```
-atau bisa juga dituliskan dengan format langsung sebagai berikut:
-```R
-mean(rexp(100,3))
-```
-Dari kode di atas didapatkan hasil rataan simulasi adalah kurang lebih bernilai 0.33
-
-<img width="160" alt="image" src="https://user-images.githubusercontent.com/99629909/162558687-9992f381-a8c6-4a70-ad5b-4050fdb983a9.png">
-
-Varian untuk kondisi eksak dapat dihitung dengan rumus
-> var(x) = 1/(n * lambda^2)
-
-Sehingga pengimplementasiannya dalam bahasa R adalah:
-```R
-n = 100
-lambda = 3
-var = 1/(lambda^2)
-var
-```
-Dari kode di atas didapatkan hasil rataan exact adalah 0.11
-
-<img width="174" alt="image" src="https://user-images.githubusercontent.com/99629909/162558947-69b6147e-a9cb-43c0-af98-98ebf6819044.png">
-
-Varian untuk kondisi simulasi (n data random) dapat dihitung dengan command `var` dengan parameter `rexp`. Misalkan n = 100, maka dapat dituliskan kode: 
-```R
-x <- rexp(100, 3)  
-var(x)
-```
-atau bisa juga dituliskan dengan format langsung sebagai berikut:
-```R
-var(rexp(100, 3))
-```
-Dari kode di atas didapatkan hasil rataan simulasi adalah bernilai sekitar 0.11
-
-<img width="162" alt="image" src="https://user-images.githubusercontent.com/99629909/162558997-edac89a5-568d-4e4b-ab8b-644a875a53d5.png">
+>>SS
 
 ### **Soal 5d**
 Lakukan uji Tukey
 
 #### Penyelesaian
+Digunakan fungsi `TukeyHSD(anova)`. Pengimplementasian kodenya adalah sebagai berikut:
 
+```R
+tukey <- TukeyHSD(anova)
+print(tukey)
+```
+
+>>SS
 
 ### **Soal 5e**
 Gunakan compact letter display untuk menunjukkan perbedaan signifikan
 antara uji Anova dan uji Tukey
 
 #### Penyelesaian
+Pertama-tama dibuat compact letter display dengan menggunakan kode sebagai berikut:
+
+```R
+tukey.cld <- multcompLetters4(anova, tukey)
+print(tukey.cld)
+```
+
+>>SS
+
+Kemudian hasil dari compact letter display tersebut akan ditambahkan ke tabel dengan nilai mean dan standar deviasi. Implementasi kodenya adalah sebagai berikut:
+
+```R
+cld <- as.data.frame.list(tukey.cld$`Glass:Temp_Factor`)
+data_summary$Tukey <- cld$Letters
+print(data_summary)
+```
+
+>>SS
