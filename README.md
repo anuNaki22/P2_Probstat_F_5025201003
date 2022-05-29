@@ -135,93 +135,93 @@ rata-ratanya (α= 0.05)? Buatlah :
 H0 dan H1
 
 #### Penyelesaian
-Pada soal diketahui bahwa rata-rata historis bayi lahir per hari atau lambdanya adalah 4,5. Sehingga dapat digunakan command `dpois` untuk menghitung peluang eksak (probability density function dari X), dimana nilai x adalah 6.
+Untuk mencari H0 dan H1 dapat menggunakan rumus:
+
+<img width="353" alt="image" src="https://user-images.githubusercontent.com/99629909/170854388-ca920f1c-1495-4e99-9ff7-70263e1dc776.png">
+
+Apabila diimplementasikan ke RStudio akan menjadi:
+
+Mencari HO:
 
 ```R
-dpois(x=6, lambda=4.5)
+h0 = (3.64-0)/(1.67/sqrt(19))
+h0
 ```
-Didapatkan peluang bahwa 6 bayi akan lahir di rumah sakit ini besok adalah sebesar 0.1281201
 
-<img width="198" alt="image" src="https://user-images.githubusercontent.com/99629909/162556341-114039d9-b420-4b51-872e-1e7f471d8227.png">
+<img width="255" alt="image" src="https://user-images.githubusercontent.com/99629909/170854591-bc1316c4-dca9-4e7f-92f2-cefcef18594d.png">
+
+Didapatkan nilainya adalah 9.500834
+
+Mencari H1:
+
+```R
+h1 = (2.79-0)/(1.32/sqrt(27))
+h1
+```
+
+<img width="258" alt="image" src="https://user-images.githubusercontent.com/99629909/170854611-f9580f55-beb9-4808-9fcf-c2018faaba9f.png">
+
+Didapatkan nilainya adalah 10.98278
 
 ### **Soal 3b**
 Hitung Sampel Statistik
 
 #### Penyelesaian
-Langkah-langkah untuk membuat grafik dalam distribusi poisson adalah:
-1. menggunakan fungsi `set.seed` agar data random yang dipanggil memiliki nilai yang tetap
-2. membuat 365 data random dengan fungsi `rpois` dan menyimpannya dalam variabel `bayi`
-3. membuat plot dengan geom histogram dengan memasukkan paramter-parameter yang dibutuhkan
+Untuk menghitung sampel statistik dapat menggunakan fungsi `tsum.test` berikut:
 
-Berikut ini merupakan kode untuk membuat grafik banyak kondisi sukses terhadap peluang distribusi binomial:
 ```R
-set.seed(2)
-
-bayi <- data.frame('data' = rpois(365, 4.5))
-
-bayi %>% ggplot() +
-  geom_histogram(aes(x = data,
-                     y = stat(count / sum(count)),
-                     fill = data == 6),
-                 binwidth = 1,
-                 color = 'black',) +
-  scale_x_continuous(breaks = 0:10) + 
-  labs(x = 'Banyak bayi lahir setiap periode',
-       y = 'Proporsi',
-       title = 'kelahiran 6 bayi akan lahir di rumah sakit ini selama setahun (n = 365)') +
-  theme_bw()
+tsum.test(mean.x=3.64, s.x = 1.67, n.x = 19, 
+          mean.y =2.79 , s.y = 1.32, n.y = 27, 
+          alternative = "greater", var.equal = TRUE)
 ```
-Berikut ini merupakan tampilan grafiknya:
 
-<img width="699" alt="image" src="https://user-images.githubusercontent.com/99629909/162600561-71ba0e6c-9e10-4098-bf10-bbc3b4965b90.png">
-
-Untuk bisa mengetahui nilai eksak dari kondisi True pada grafik histogram di atas adalah dengan cara berikut:
-```R
-bayi %>% dplyr::summarize(enam_bayi = sum(bayi$data == 6) / n())
-```
-<img width="537" alt="image" src="https://user-images.githubusercontent.com/99629909/162600655-30871be5-8588-4e5b-ae6f-33ecb63f1f6b.png">
+<img width="539" alt="image" src="https://user-images.githubusercontent.com/99629909/170854635-6e169ded-f705-4a4e-8c6a-963f5a27461a.png">
 
 
 ### **Soal 3c**
 Lakukan Uji Statistik (df =2)
 
 #### Penyelesaian
-Hasil dari perhitungan simulasi adalah 0.12 atau 12%, sangat mendekati hasil perhitungan theoritical probability yang nilainya 0.1281201 atau 12.81201%.
-Jadi kesimpulan yang dapat diambil adalah bahwa theoritical probability terbukti benar dan dapat dipakai dalam perhitungan probabilitasi poisson.
+Kita dapat menggunakan fugnsi `plotDist`, namun kita terlebih dahulu harus menginstall library `mosaic`.
+
+```R
+install.packages("mosaic")
+library(mosaic)
+```
+
+Setelah library `mosaic` terinstall kita dapat menggunakan fungsi `plotDist` dengan parameter df = 2 sesuai yang diminta soal.
+
+```R
+plotDist(dist='t', df=2, col="red")
+```
+
+<img width="526" alt="image" src="https://user-images.githubusercontent.com/99629909/170854781-d521e109-180c-4d1f-b62b-587130da5cd6.png">
 
 ### **Soal 3d**
 Nilai Kritikal
 
 #### Penyelesaian
+Untuk menghitung nilai kritikal dapat digunakan fungsi `qchisq` dengan df = 2 seusai yang diminta pada soal.
 
-Nilai rataan dapat dihitung dengan kode berikut:
 ```R
-x <- rpois(365, 4.5) 
-mean(x)
+qchisq(p = 0.05, df = 2, lower.tail=FALSE)
 ```
-didapatkan rataannya adalah kurang lebih 4.5
 
-<img width="186" alt="image" src="https://user-images.githubusercontent.com/99629909/162557244-54e6e0b6-01da-45c8-aa8a-8b8cb3fc3d6f.png">
+didapatkan nilai kritikalnya adalah 5.991465
 
-Nilai varian dapat dihitung dengan kode berikut:
-```R
-x <- rpois(365, 4.5)  
-var(x)
-```
-didapatkan rataannya adalah kurang lebih 4.5
-
-<img width="185" alt="image" src="https://user-images.githubusercontent.com/99629909/162557286-cbf5302e-2a76-48a3-9ed4-7820f77c06f5.png">
+<img width="364" alt="image" src="https://user-images.githubusercontent.com/99629909/170855154-557209fe-7117-44aa-aff4-b07f3be73185.png">
 
 ### **Soal 3e**
 Keputusan
 
 #### Penyelesaian
-
+Pada teori keputusan terdapat aksi dan kemungkinan konsekuensi. Pada soal ini aksinya adalah `({a}_{a∈A})` dan kemungkinan konsekuensinya adalah `({c}_{c∈C})`. Sehingga keputusan dapat diambil dari `t.test`. 
 
 ### **Soal 3f**
 Kesimpulan
 
 #### Penyelesaian
+Kesimpulan yang dapat diambil adalah bahwa tidak ada perbedaan rata-rata bila dilihat dari uji statistik dan akan ada sedikit perbedaan yang tidak signifikan yang dipengaruhi oleh nilai kritikal.
 
 
 ## Nomor 4
