@@ -345,54 +345,61 @@ Untuk uji ANOVA (satu arah), buatlah model linier dengan Panjang versus
 Grup dan beri nama model tersebut model 1.
 
 #### Penyelesaian
-Nilai rataan dari distribusi Chi-Square adalah sama dengan derajat kebebasan. Atau bisa dituliskan dengan formula:
-> μ = df
-
-Sehingga nilai rataanya adalah 10.
-
-Pengimplementasiannya dalam bahasa R adalah sebagai berikut:
+Untuk memodelkan uji ANOVA satu arah dalam bentuk model linier dengan Panjang (Length) versus Grup (Group) serta nama model adalah "model1" dapat menggunakan kode sebagai berikut:
 
 ```R
-x <- rchisq(100, 10) 
-mean(x)
+model = lm(Length ~ Group, data = data_oneway)
+anova(model)
+
+model1 = aov(Length ~ Group, data=data_oneway)
+summary(model1)
 ```
-Hasil running kode di atas mendapatkan nilai rataan yang sama sesuai dengan teori yaitu 10.
 
-<img width="185" alt="image" src="https://user-images.githubusercontent.com/99629909/162557680-5f38e613-0372-47a7-b649-b057db10ecf8.png">
-
-Nilai varian dari distribusi Chi-Square adalah sama dengan 2 kali derajat kebebasan. Atau bisa dituliskan dengan formula:
-> μ = 2df
-
-Sehingga nilai variannya adalah 20.
-
-Pengimplementasiannya dalam bahasa R adalah sebagai berikut:
-
-```R
-x <- rchisq(100, 10)  
-var(x)
-```
-Hasil running kode di atas mendapatkan nilai varian yang sama sesuai dengan teori yaitu 20.
-
-<img width="182" alt="image" src="https://user-images.githubusercontent.com/99629909/162557729-5c2815bb-243d-4aa3-9e68-e629dc3e4229.png">
+<img width="509" alt="image" src="https://user-images.githubusercontent.com/99629909/170864361-7cfed2fe-c81e-4cc4-b275-eff3cbbf6b43.png">
 
 ### **Soal 4d**
 Dari Hasil Poin C, Berapakah nilai-p ? , Apa yang dapat Anda simpulkan
 dari H0?
 
 #### Penyelesaian
-
+Dari hasil di atas dapat dilihat bahwa p-valuenya adalah 0.0013. Karena p-valuenya 0.0013 yang mana lebih kecil dari 0.05, maka Ho ditolak.
 
 ### **Soal 4e**
 Verifikasilah jawaban model 1 dengan Post-hoc test Tukey HSD, dari nilai p
 yang didapatkan apakah satu jenis kucing lebih panjang dari yang lain? Jelaskan.
 
 #### Penyelesaian
+Pada RStudio penggunaan Post-hoc test Tukey HSD dapat diimplementasikan dengan kode berikut:
+
+```R
+TukeyHSD(aov(model))
+```
+
+<img width="555" alt="image" src="https://user-images.githubusercontent.com/99629909/170864517-3a6e8e78-5814-4e97-b813-fb604f55895c.png">
+
+```R
+TukeyHSD(model1)
+```
+
+<img width="563" alt="image" src="https://user-images.githubusercontent.com/99629909/170864532-1e493262-5c8c-4c72-ad40-7c2b6833c54b.png">
+
+Karena p-valuenya 0.0013 yang mana lebih kecil dari 0.05, maka Ho ditolak. Sehingga dapat disimpulkan bahwa satu jenis kucing lebih panjang dari yang lain.
 
 
 ### **Soal 4f**
 Visualisasikan data dengan ggplot2
 
 #### Penyelesaian
+```R
+library("ggplot2")
+ggplot(data_oneway, aes(x = Group, y = Length)) +
+  geom_boxplot(fill = "grey100", colour = "black") +
+  scale_x_discrete() + xlab("Treatment Group") +
+  ylab("Length (cm)")
+```
+
+<img width="508" alt="image" src="https://user-images.githubusercontent.com/99629909/170864484-db7679e4-86c4-40ee-82e4-5511794ab856.png">
+
 
 ## Nomor 5
 Data yang digunakan merupakan hasil eksperimen yang dilakukan untuk
