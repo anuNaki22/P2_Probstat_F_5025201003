@@ -431,14 +431,17 @@ GTL <- read_csv("GTL.csv")
 head(GTL)
 ```
 
->>SS
+<img width="658" alt="image" src="https://user-images.githubusercontent.com/99629909/170867681-9b57bd83-3802-4bb8-b09d-f1e73a667b47.png">
 
-Dan terakhir kita akan membuat visualisasi data menggunakan simple plot dengan kode sebagai berikut:
+Untuk mengecek apakah data kita sudah masuk ke `GTL` atau belum sekaligus melakuakn observasi terhadap data, kita bisa menggunakan kode berikut:
 
 ```R
 str(GTL)
 ```
-Untuk mengecek apakah data kita sudah masuk ke `GTL` atau belum sekaligus melakuakn observasi terhadp data, kita bisa menggunakan kode berikut:
+
+<img width="536" alt="image" src="https://user-images.githubusercontent.com/99629909/170867799-bbeb0f33-df7b-4747-b92b-6d9d29c5ca9c.png">
+
+Dan terakhir kita akan membuat visualisasi data menggunakan simple plot dengan kode sebagai berikut:
 
 ```R
 qplot(x = Temp, y = Light, geom = "point", data = GTL) +
@@ -447,20 +450,21 @@ qplot(x = Temp, y = Light, geom = "point", data = GTL) +
 
 Tampilan dari hasil run kode di atas adalah sebagai berikut:
 
->>SS
+<img width="696" alt="image" src="https://user-images.githubusercontent.com/99629909/170867857-7965308a-ff1f-4108-b140-e69f48a941dc.png">
 
 ### **Soal 5b**
 Lakukan uji ANOVA dua arah
 
 #### Penyelesaian
 Pertama-tama kita harus membuat variabel as factor sebagai ANOVA
+
 ```R
 GTL$Glass <- as.factor(GTL$Glass)
 GTL$Temp_Factor <- as.factor(GTL$Temp)
 str(GTL)
 ```
 
->>SS
+<img width="637" alt="image" src="https://user-images.githubusercontent.com/99629909/170867894-a8254e4c-f12f-4d47-890d-bce3c45ed6ba.png">
 
 Kemudian untuk melakukan analisis of variance, kita bisa menggunakan kode sebagai berikut:
 
@@ -469,7 +473,7 @@ anova <- aov(Light ~ Glass*Temp_Factor, data = GTL)
 summary(anova)
 ```
 
->>SS
+<img width="520" alt="image" src="https://user-images.githubusercontent.com/99629909/170867908-4b5109d3-85a1-4fbb-9cb5-5ff923c680a8.png">
 
 ### **Soal 5c**
 Tampilkan tabel dengan mean dan standar deviasi keluaran cahaya untuk
@@ -485,7 +489,7 @@ data_summary <- group_by(GTL, Glass, Temp) %>%
 print(data_summary)
 ```
 
->>SS
+<img width="742" alt="image" src="https://user-images.githubusercontent.com/99629909/170867926-446cb298-f04e-41e7-8c83-3a9e584063b1.png">
 
 ### **Soal 5d**
 Lakukan uji Tukey
@@ -498,7 +502,11 @@ tukey <- TukeyHSD(anova)
 print(tukey)
 ```
 
->>SS
+<img width="495" alt="image" src="https://user-images.githubusercontent.com/99629909/170867960-85839419-0ce4-426c-ae1f-6d7e7ae492f3.png">
+
+<img width="469" alt="image" src="https://user-images.githubusercontent.com/99629909/170868026-2633cc9f-08c6-44f3-8143-40a8e009e77b.png">
+
+<img width="467" alt="image" src="https://user-images.githubusercontent.com/99629909/170868052-381ee7a8-b34b-4c34-8345-02c62cc445f2.png">
 
 ### **Soal 5e**
 Gunakan compact letter display untuk menunjukkan perbedaan signifikan
@@ -512,7 +520,7 @@ tukey.cld <- multcompLetters4(anova, tukey)
 print(tukey.cld)
 ```
 
->>SS
+<img width="446" alt="image" src="https://user-images.githubusercontent.com/99629909/170868081-96e40382-2fe6-43cd-b9ce-7acb63c534ee.png">
 
 Kemudian hasil dari compact letter display tersebut akan ditambahkan ke tabel dengan nilai mean dan standar deviasi. Implementasi kodenya adalah sebagai berikut:
 
@@ -522,4 +530,4 @@ data_summary$Tukey <- cld$Letters
 print(data_summary)
 ```
 
->>SS
+<img width="469" alt="image" src="https://user-images.githubusercontent.com/99629909/170868132-74c4fa79-9df2-497f-bd14-6762e690e7c2.png">
