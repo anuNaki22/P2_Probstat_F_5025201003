@@ -257,31 +257,88 @@ Buatlah masing masing jenis spesies menjadi 3 subjek "Grup" (grup 1,grup
 lihat apakah ada outlier utama dalam homogenitas varians.
 
 #### Penyelesaian
-Pada soal diketahui bahwa nilai x adalah 2 dan nilai v atau derajat kebebasannya adalah 10
+Pertama-tama kita harus mengambil data dari link pada soal dengan kode sebagai berikut:
 
 ```R
-pchisq(2, 10)
+data_oneway <- read.table("https://rstatisticsandresearch.weebly.com/uploads/1/0/2/6/1026585/onewayanova.txt",h=T)
+head(data_oneway)
 ```
-didapatkan hasilnya adalah 0.0037
 
-<img width="127" alt="image" src="https://user-images.githubusercontent.com/99629909/162557411-b54e52e8-bd2b-452e-93d8-808e5cab6358.png">
+<img width="126" alt="image" src="https://user-images.githubusercontent.com/99629909/170862958-68a37fba-4e62-4c5c-ab84-a67b6c12158f.png">
+
+Kemudian kita buat `data_oneway` menjadi grup. Disini digunakan nama "Group" bukan "Grup" dikarenakan nama kolom databasenya adalah "Group". Implementasi kodenya adalah sebagai berikut:
+
+```R
+data_oneway$Group <- as.factor(data_oneway$Group)
+table(data_oneway$Group)
+```
+
+<img width="82" alt="image" src="https://user-images.githubusercontent.com/99629909/170862974-4a1d9d7c-d170-471b-859c-d3429d2cbf8c.png">
+
+Selanjutnya untuk mengecek apakah dia sudah berhasil menyimpan setiap data ke Groupnya digunakan kode berikut:
+
+```R
+str(data_oneway)
+```
+
+<img width="547" alt="image" src="https://user-images.githubusercontent.com/99629909/170862997-4316f1e0-934c-4a9e-92c2-f8e893ae8a46.png">
+
+Kemudian Group tersebut akan dibagi menjadi 3 Group dengan nama sesuai pada soal. Implementasi kodenya sebagai berikut:
+
+```R
+data_oneway$Group = factor(data_oneway$Group,labels = c("kucing oren", "kucing hitam", "kucing putih"))
+
+Group1 <- subset(data_oneway, Group == "kucing oren")
+Group2 <- subset(data_oneway, Group == "kucing hitam")
+Group3 <- subset(data_oneway, Group == "kucing putih")
+```
+
+Untuk menggambarkan plot kuantil normal untuk setiap kelompok dapat menggunakan fungsi `qqnorm` dan `qqline`.
+
+Plot kuartil normal untuk Group 1:
+
+```R
+qqnorm(Group1$Length)
+qqline(Group1$Length)
+```
+
+<img width="615" alt="image" src="https://user-images.githubusercontent.com/99629909/170863017-3388758f-f636-42d0-947f-8048e4eba835.png">
+
+Plot kuartil normal untuk Group 2:
+
+```R
+qqnorm(Group2$Length)
+qqline(Group2$Length)
+```
+
+<img width="638" alt="image" src="https://user-images.githubusercontent.com/99629909/170863109-7f9eb6b4-bb20-461b-9917-34630c131c36.png">
+
+Plot kuartil normal untuk Group 3:
+
+```R
+qqnorm(Group3$Length)
+qqline(Group3$Length)
+```
+
+<img width="609" alt="image" src="https://user-images.githubusercontent.com/99629909/170863129-a93a1b35-ee25-4880-8ed1-97c923b44508.png">
+
+**Dapat dilihat bahwa tidak ada outlier utama dalam homogenitas varians.**
+
 
 ### **Soal 4b**
 carilah atau periksalah Homogeneity of variances nya , Berapa nilai p yang
 didapatkan? , Apa hipotesis dan kesimpulan yang dapat diambil ?
 
 #### Penyelesaian
-1. generate data random menggunakan command `rchisq`. Disini saya mencontohkan dengan hanya mengambil 100 data random sesuai ketentuan soal
-2. pada `rchisq` membuthkan parameter berupa derajat kebebasan, dimana pada soal ini derajat kebebasannya bernilai 10
-3. kemudian digunakan package library(tidyverse) untuk membantu dalam pembuatan grafik
-4. digunakan command `qplot` dengan parameter geom adalah histogram dan set warna border sesuai yang kita inginkan
+
 ```R
-x <- rchisq(100, 10)
-library(tidyverse)
-qplot(x, geom = "histogram", col = I("white"))
+bartlett.test(Length ~ Group, data = data_oneway)
 ```
 
-<img width="395" alt="image" src="https://user-images.githubusercontent.com/99629909/162557461-d8685031-82c5-402c-8492-a5a99aef554f.png">
+<img width="472" alt="image" src="https://user-images.githubusercontent.com/99629909/170863263-3e3a16f4-5ad1-463e-b66b-7a17be4cdd28.png">
+
+Dapat dilihat bahwa p-valuenya adalah 0.43292. Karena p-value lebih besar dari 0,05, maka terima H0. Maka dia memiliki varians yang sama (homogenity of variances) secara statistik di antara kelompok.
+
 
 ### **Soal 4c**
 Untuk uji ANOVA (satu arah), buatlah model linier dengan Panjang versus
