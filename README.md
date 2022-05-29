@@ -141,7 +141,7 @@ Untuk mencari H0 dan H1 dapat menggunakan rumus:
 
 Apabila diimplementasikan ke RStudio akan menjadi:
 
-Mencari HO:
+Mencari H0:
 
 ```R
 h0 = (3.64-0)/(1.67/sqrt(19))
