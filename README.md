@@ -414,7 +414,7 @@ Buatlah plot sederhana untuk visualisasi data
 #### Penyelesaian
 Pada penyelesaian soal nomor 5 ini saya menggunakan referensi kode dari internet dengan link sebagai berikut: https://statdoe.com/two-way-anova-in-r/
 
-Langkah pertama adalah menginstall packages yang dibutuhkan yaitu `multcompView` dan melakukan run terhadap semua library yang dibutuhkan dalam penyelesaian soal ini.
+Langkah pertama adalah mendownload file GTL.csv pada link yang ada pada soal. Selanjutnya kita harus menginstall packages yang dibutuhkan yaitu `multcompView` dan melakukan run terhadap semua library yang dibutuhkan dalam penyelesaian soal ini.
 
 ```R
 install.packages("multcompView")
